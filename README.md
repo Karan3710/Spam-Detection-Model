@@ -1,14 +1,23 @@
 # Spam-Detection-Model
-📧 Spam Mail Detection using NLP and Machine Learning
-This repository contains a Python-based spam detection system that uses Natural Language Processing (NLP) and a supervised learning model to classify SMS messages as SPAM or HAM (not spam).
+# 📧 Spam Mail Detection using NLP and Machine Learning
 
-🚀 Features
-Text preprocessing using NLTK (lowercasing, punctuation removal, stopword removal)
+This project is a Python-based spam detection system that uses Natural Language Processing (NLP) and a supervised learning model (Multinomial Naive Bayes) to classify SMS messages as **SPAM** or **HAM** (not spam).
 
-TF-IDF vectorization for text feature extraction
+## 🚀 Features
+- Preprocesses raw text (lowercase, punctuation removal, stopword filtering)
+- Converts messages to numerical form using TF-IDF vectorization
+- Trains a Naive Bayes classifier
+- Saves and loads the model and vectorizer using `pickle`
+- Simple prediction function for new text messages
 
-Multinomial Naive Bayes classifier for spam detection
+## 📁 Files
+- `spam_detector.py`: Core script to preprocess, train, and predict
+- `model.pkl`: Trained spam detection model (generated after training)
+- `vectorizer.pkl`: Fitted TF-IDF vectorizer (generated after training)
+- `spam.csv`: SMS Spam Collection dataset (UCI ML repository)
 
-Model and vectorizer serialization using pickle
+## 🛠 Requirements
 
-Easy-to-use prediction function to classify new messages
+Install dependencies using pip:
+```bash
+pip install -r requirements.txt
