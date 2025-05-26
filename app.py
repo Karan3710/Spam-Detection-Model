@@ -1,15 +1,23 @@
 
-import pandas as pd
+import os
 import string
+import pickle
+import pandas as pd
 import nltk
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-import pickle
+import streamlit as st
 
-nltk.download('stopwords')
+# Ensure NLTK stopwords are available
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
+
 from nltk.corpus import stopwords
 
+# Preprocessing function
 def preprocess_text(text):
     text = text.lower()
     text = "".join([char for char in text if char not in string.punctuation])
@@ -17,8 +25,9 @@ def preprocess_text(text):
     stop_words = stopwords.words('english')
     return " ".join([word for word in words if word not in stop_words])
 
+# Train model and save artifacts
 def train_and_save_model():
-    df = pd.read_csv(r"C:\Users\karan\Downloads\archive (11)\spam.csv", encoding='latin-1')[['v1', 'v2']]
+    df = pd.read_csv("spam.csv", encoding='latin-1')[['v1', 'v2']]
     df.columns = ['label', 'message']
     df['label_num'] = df.label.map({'ham': 0, 'spam': 1})
     df['cleaned_message'] = df['message'].apply(preprocess_text)
@@ -35,6 +44,7 @@ def train_and_save_model():
     with open("vectorizer.pkl", "wb") as f:
         pickle.dump(tfidf, f)
 
+# Load model and vectorizer from disk
 def load_model_and_vectorizer():
     with open("model.pkl", "rb") as f:
         model = pickle.load(f)
@@ -42,26 +52,18 @@ def load_model_and_vectorizer():
         tfidf = pickle.load(f)
     return model, tfidf
 
+# Predict function
 def predict_spam(text, model, tfidf):
     cleaned = preprocess_text(text)
     transformed = tfidf.transform([cleaned])
     prediction = model.predict(transformed)[0]
     return "SPAM" if prediction == 1 else "HAM"
 
-if __name__ == "__main__":
-    train_and_save_model()  # Uncomment this line to train and save the model
-    
-import streamlit as st
-import subprocess
-import sys
+# Check if model exists, train if not
+if not os.path.exists("model.pkl") or not os.path.exists("vectorizer.pkl"):
+    train_and_save_model()
 
-# Try to install nltk if it's not already installed
-try:
-    import nltk
-except ModuleNotFoundError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "nltk"])
-    import nltk  # Try importing again after install
-
+# Streamlit UI
 st.set_page_config(page_title="📨 Spam Mail Detection", page_icon="📩")
 
 st.title("📨 Spam Mail Detection App")
