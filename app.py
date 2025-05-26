@@ -1,5 +1,4 @@
-import sys
-print(">>> Python path:", sys.executable)
+
 import pandas as pd
 import string
 import nltk
@@ -53,6 +52,16 @@ if __name__ == "__main__":
     train_and_save_model()  # Uncomment this line to train and save the model
     
 import streamlit as st
+import subprocess
+import sys
+
+# Try to install nltk if it's not already installed
+try:
+    import nltk
+except ModuleNotFoundError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "nltk"])
+    import nltk  # Try importing again after install
+
 st.set_page_config(page_title="📨 Spam Mail Detection", page_icon="📩")
 
 st.title("📨 Spam Mail Detection App")
