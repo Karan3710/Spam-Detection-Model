@@ -1,3 +1,4 @@
-pip install nltk
-pip install pandas
-pip install scikit-learn
+streamlit
+pandas
+scikit-learn
+nltk
