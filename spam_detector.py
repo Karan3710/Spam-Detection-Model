@@ -17,7 +17,7 @@ def preprocess_text(text):
     return " ".join([word for word in words if word not in stop_words])
 
 def train_and_save_model():
-    df = pd.read_csv(r"C:\Users\karan\Downloads\archive (11)\spam.csv", encoding='latin-1')[['v1', 'v2']]
+    df = pd.read_csv("spam.csv", encoding='latin-1')[['v1', 'v2']]
     df.columns = ['label', 'message']
     df['label_num'] = df.label.map({'ham': 0, 'spam': 1})
     df['cleaned_message'] = df['message'].apply(preprocess_text)
