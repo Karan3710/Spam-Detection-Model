@@ -1,3 +1,5 @@
+import sys
+print(">>> Python path:", sys.executable)
 import pandas as pd
 import string
 import nltk
